@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Levels {
     public class LevelTimer : MonoBehaviour {
-        const float TIMER_START = 0.00f,
+        const float TIMER_START = 3.00f,
             TIMER_END = 0.00f;
         
 
-        float timer = 0.00f;
-        bool isTimeUp = false;
+        float timer = -1.00f;
+        bool timeIsUp = false;
 
         
         void Start() {
@@ -20,14 +20,16 @@ namespace Levels {
         
         /* TODO
         */
-        void Update() {  
-            GameObject.Find("Level Timer").GetComponent<LevelTimer>();
-            
-            /*
-            if((timer += Time.deltaTime) >= TIMER_END) {
+        void Update() {
+            if (timeIsUp == true) {
                 Application.Quit();
             }
-            */
+
+            
+            if((timer -= Time.deltaTime) <= TIMER_END) {
+                timeIsUp = true;
+            }
+            
         }
 
     }

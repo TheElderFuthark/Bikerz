@@ -49,10 +49,10 @@ namespace Levels {
             objRef.name = GAME_OBJECT_LEVEL_ACTIONS;
 
 
-            objRef.AddComponent<LevelActions>();
-            
-            
+            objRef.AddComponent<LevelActions>(); 
             objRef.transform.parent = GameObject.Find(GAME_OBJECT_LEVEL_MANAGER).transform;
+            
+            
             return objRef;
         }
 
@@ -75,10 +75,13 @@ namespace Levels {
 
         bool SpawnAll(
             GameObject levels,
-            GameObject hud,
+            GameObject ui,
             GameObject timer
         ) {
-            if(levels && hud && timer) {
+            if( GameObject.Find(levels.name) && 
+                GameObject.Find(ui.name) && 
+                GameObject.Find(timer.name)
+            ) {
                 return true;
             }
 

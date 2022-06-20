@@ -1,3 +1,8 @@
+/*  @Title: Bikerz
+    @Author: Lloyd Thomas
+    @Version: v0.01
+    @Date: 29/05/2022
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +13,7 @@ namespace Levels {
         public bool SpawnInstance(
             GameObject obj
         ) {
-            if(obj) {
+            if(GameObject.Find(obj.name)) {
                 return true;
             } 
             
@@ -24,11 +29,11 @@ namespace Levels {
             GameObject projectiles,
             GameObject mob
         ) {
-            if( hud && 
-                player && 
-                motorcycle && 
-                projectiles &&
-                mob
+            if( GameObject.Find(hud.name) && 
+                GameObject.Find(player.name) && 
+                GameObject.Find(motorcycle.name) && 
+                GameObject.Find(projectiles.name) &&
+                GameObject.Find(mob.name)
             ) {
                 return true;
             }
