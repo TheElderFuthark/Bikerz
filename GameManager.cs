@@ -12,6 +12,7 @@ using Screens;
 using Levels;
 using Menus;
 using Graphics;
+using Player;
 
 
 namespace Bikerz {
@@ -26,11 +27,17 @@ namespace Bikerz {
             GAME_OBJECT_MENUS = "Menu Manager";
 
 
-        const string GAME_SCREEN = "Test Area";
+        const string MAIN_MENU = "Main Menu",
+            PAUSE_SCREEN = "Pause Menu",
+            GAME_SCREEN = "Test Area";
 
 
-        GameObject obj_Screens,
+        GameObject obj_Game,
+            obj_Screens,
             obj_Menus;
+
+
+        string screen = "";
 
 
         void HandleGameError() {
@@ -39,13 +46,52 @@ namespace Bikerz {
         }
 
 
+        public GameObject StartGame(
+            GameObject obj
+        ) {
+            GameObject objRef = obj;
+            objRef.name = GAME_OBJECT_MANAGER;
+
+
+            objRef.transform.position = new Vector3(
+                0.00f,
+                0.00f,
+                0.00f
+            );
+
+
+            objRef.transform.parent = GameObject.Find(GAME_OBJECT_HANDLER).transform;
+            return objRef;
+        }
+
+
+        public GameObject StartLevelManager(
+            GameObject obj
+        ) {
+            GameObject objRef = obj;
+            objRef.name = GAME_OBJECT_LEVELS;
+
+
+            objRef.AddComponent<LevelManager>();
+            objRef.transform.position = new Vector3(
+                2.00f,
+                0.00f,
+                0.00f
+            );
+
+
+            objRef.transform.parent = GameObject.Find(GAME_OBJECT_HANDLER).transform;
+            return objRef;
+        }
+
+
         GameObject GetMenuManager(
             GameObject obj
         ) {
             GameObject objRef = obj;
             objRef.name = GAME_OBJECT_MENUS;
-            
-            
+
+
             objRef.AddComponent<MenuManager>();
             objRef.AddComponent<MainMenu>();
             objRef.AddComponent<PauseMenu>();
@@ -58,66 +104,15 @@ namespace Bikerz {
         }
 
 
-        GameObject StartLevelManager(
-            GameObject obj
-        ) {
-            GameObject objRef = obj;
-            objRef.name = GAME_OBJECT_LEVELS;
-
-
-            objRef.AddComponent<LevelManager>();
-            objRef.transform.position = new Vector3(
-                2.00f, 
-                0.00f, 
-                0.00f
-            );
-
-
-            objRef.transform.parent = GameObject.Find(GAME_OBJECT_HANDLER).transform;
-            return objRef;
-        }
-
-
         GameObject GetScreenManager(GameObject obj) {
             GameObject objRef = obj;
             objRef.name = "Screen Manager";
-            
-            
+
+
             objRef.AddComponent<ScreenManager>();
+            objRef.AddComponent<PauseMenuScreen>();
+            objRef.AddComponent<MainMenuScreen>();
             objRef.AddComponent<GameScreen>();
-            
-            
-            objRef.transform.parent = GameObject.Find(GAME_OBJECT_HANDLER).transform;
-            return objRef;
-        }
-
-
-        bool SpawnAll(
-            GameObject gameManager,
-            GameObject levelManager
-        ) {
-            if( GameObject.Find(gameManager.name) && 
-                GameObject.Find(levelManager.name)) {
-                return true;
-            }
-
-
-            return false;
-        }
-
-
-        GameObject StartGame(
-            GameObject obj
-        ) {
-            GameObject objRef = obj;
-            objRef.name = GAME_OBJECT_MANAGER;
-
-
-            objRef.transform.position = new Vector3(
-                0.00f, 
-                0.00f, 
-                0.00f
-            );
 
 
             objRef.transform.parent = GameObject.Find(GAME_OBJECT_HANDLER).transform;
@@ -126,25 +121,21 @@ namespace Bikerz {
 
 
         void Start() {
-            if(GameObject.Find(GAME_OBJECT_HANDLER)) {   
+            if(GameObject.Find(GAME_OBJECT_HANDLER)) {
                 obj_Screens = GetScreenManager(new GameObject());
                 obj_Menus = GetMenuManager(new GameObject());
+
+
+                /* Sets first screen */
+                screen = GAME_SCREEN;
 
 
                 if(obj_Screens.GetComponent<ScreenManager>().SelectScreen(
                     obj_Menus,
                     obj_Screens,
-                    GAME_SCREEN // Test input
-                )) {
-                    if(SpawnAll(
-                        StartGame(new GameObject()),
-                        StartLevelManager(new GameObject())
-                    )) {
-                        Debug.Log(DEBUG_SUCCESS);
-                    } else {
-                        HandleGameError();
-                    }
-
+                    screen
+                ) == false) {
+                    HandleGameError();
                 }
             } else {
                 HandleGameError();
@@ -154,7 +145,20 @@ namespace Bikerz {
 
 
         void Update() {
-        } // Do nothing...
+            if(GameObject.Find("Player").GetComponent<PlayerControls>().PauseGame() == true) {
+                screen = PAUSE_SCREEN;
+            } else {
+                screen = GAME_SCREEN;
+            }
+
+
+            obj_Screens.GetComponent<ScreenManager>().SelectScreen(
+                obj_Menus,
+                obj_Screens,
+                screen
+            );
+
+        }
 
     }
 

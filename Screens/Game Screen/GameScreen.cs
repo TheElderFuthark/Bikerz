@@ -1,12 +1,46 @@
+/*  @Title: Bikerz
+    @Author: Lloyd Thomas
+    @Version: v0.01
+    @Date: 29/05/2022
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
+using Bikerz;
+using Levels;
+
+
 namespace Screens {
     public class GameScreen : MonoBehaviour {
-        public void Run() {
+        const string GAME_OBJECT_HANDLER = "Game Handler",
+            GAME_OBJECT_LEVELS = "Level Manager",
+            GAME_OBJECT_MANAGER = "Game Manager";
+
+
+        public bool Run() {
+            if((!GameObject.Find(GAME_OBJECT_MANAGER)) &&
+                (!GameObject.Find(GAME_OBJECT_LEVELS))
+            ) {
+                if((GameObject
+                        .Find(GAME_OBJECT_HANDLER)
+                        .GetComponent<GameManager>()
+                        .StartGame(new GameObject())) &&
+                    (GameObject
+                        .Find(GAME_OBJECT_HANDLER)
+                        .GetComponent<GameManager>()
+                        .StartLevelManager(new GameObject()))
+                ) {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+
+
+            return false;
         }
 
 

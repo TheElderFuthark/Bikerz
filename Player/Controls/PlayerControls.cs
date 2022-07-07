@@ -12,7 +12,7 @@ using Mobs;
 using Graphics;
 
 
-namespace Player { 
+namespace Player {
     public class PlayerControls : MonoBehaviour {
         public const float FIRE_SPEED = 0.125f;
 
@@ -38,20 +38,20 @@ namespace Player {
 
 
         GameObject obj_Player_Ref;
-        
-        
-        public float x2, 
+
+
+        public float x2,
             y2;
-        
+
 
         void MoveLeft(
-            GameObject player, 
-            float x, 
-            float y        
+            GameObject player,
+            float x,
+            float y
         ) {
             player.transform.position = new Vector3(
-                x - PLAYER_SPEED_X, 
-                y, 
+                x - PLAYER_SPEED_X,
+                y,
                 Z
             );
 
@@ -59,105 +59,115 @@ namespace Player {
 
 
         void MoveRight(
-            GameObject player, 
-            float x, 
-            float y
-        ) {
-            player.transform.position = new Vector3(
-                x + PLAYER_SPEED_X,
-                y, 
-                Z
-            );
-            
-        }
-
-
-        void MoveUp(
-            GameObject player, 
+            GameObject player,
             float x,
             float y
         ) {
             player.transform.position = new Vector3(
-                x, 
+                x + PLAYER_SPEED_X,
+                y,
+                Z
+            );
+
+        }
+
+
+        void MoveUp(
+            GameObject player,
+            float x,
+            float y
+        ) {
+            player.transform.position = new Vector3(
+                x,
                 y + PLAYER_SPEED_Y,
                 Z
             );
-            
+
         }
 
 
         void MoveDown(
-            GameObject player, 
-            float x, 
-            float y 
+            GameObject player,
+            float x,
+            float y
         ) {
             player.transform.position = new Vector3(
-                x, 
-                y - PLAYER_SPEED_Y, 
+                x,
+                y - PLAYER_SPEED_Y,
                 Z
             );
-            
+
         }
 
 
         int MovePlayer(
-            GameObject player, 
-            float x, 
+            GameObject player,
+            float x,
             float y
         ) {
             // Overall player movement capabilities
-            int gridSnap_y_Ref = player.GetComponent<PlayerData>().gridSnap_y;  
+            int gridSnap_y_Ref = player.GetComponent<PlayerData>().gridSnap_y;
 
 
-            if(Input.GetKey("left") || 
+            if(Input.GetKey("left") ||
                 Input.GetKey("a")
             ) {
                 if(x > GRIDSNAP_MIN_X) {
-                    MoveLeft(player, 
-                        x, 
+                    MoveLeft(player,
+                        x,
                         y
                     );
 
                 }
-            } else if(Input.GetKey("right") || 
+            } else if(Input.GetKey("right") ||
                 Input.GetKey("d")
             ) {
                 if(x < GRIDSNAP_MAX_X) {
-                    MoveRight(player, 
-                        x, 
+                    MoveRight(player,
+                        x,
                         y
                     );
 
                 }
-            } else if(Input.GetKeyDown("up") || 
+            } else if(Input.GetKeyDown("up") ||
                 Input.GetKeyDown("w")
             ) {
                 if(gridSnap_y_Ref < GRIDSNAP_MAX_Y) {
-                    MoveUp(player, 
-                        x, 
+                    MoveUp(player,
+                        x,
                         y
                     );
 
 
                     gridSnap_y_Ref++;
                 }
-            } else if(Input.GetKeyDown("down") || 
+            } else if(Input.GetKeyDown("down") ||
                 Input.GetKeyDown("s")
             ) {
                 if(gridSnap_y_Ref > GRIDSNAP_MIN_Y) {
-                    MoveDown(player, 
-                        x, 
+                    MoveDown(player,
+                        x,
                         y
                     );
 
 
                     gridSnap_y_Ref--;
                 }
-                
+
             }
 
 
             return gridSnap_y_Ref;
+        }
+
+
+        public bool PauseGame() {
+            if(Input.GetKeyDown(KeyCode.Escape)) {
+                return true;
+            }
+
+
+            return false;
         }
 
 
@@ -166,9 +176,9 @@ namespace Player {
                 return FIRE_LEFT;
             } else if(Input.GetKeyDown("2")) {
                 return FIRE_RIGHT;
-            }   
-            
-            
+            }
+
+
             return "\0";
         }
 
@@ -189,7 +199,7 @@ namespace Player {
 
         void Start() {
             obj_Player_Ref = GameObject.Find("Player");
-        } 
+        }
 
 
         void Update() {
@@ -200,8 +210,8 @@ namespace Player {
             obj_Player_Ref.
                 GetComponent<PlayerData>().
                     gridSnap_y = MovePlayer(
-                        obj_Player_Ref,  
-                        x2, 
+                        obj_Player_Ref,
+                        x2,
                         y2
                     );
 

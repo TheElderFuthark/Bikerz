@@ -1,3 +1,8 @@
+/*  @Title: Bikerz
+    @Author: Lloyd Thomas
+    @Version: v0.01
+    @Date: 29/05/2022
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,30 +25,27 @@ namespace Screens {
         ) {
             switch(select) {
                 case MAIN_MENU:
-                    menu.GetComponent<MenuManager>().MainMenuManager(menu); 
-                    return false;
+                    return gameScreen.GetComponent<MainMenuScreen>().Open(menu);
                 case PAUSE_MENU:
-                    menu.GetComponent<MenuManager>().PauseMenuManager(menu); 
-                    return false;
+                    return gameScreen.GetComponent<PauseMenuScreen>().Open(menu);
                 case GAME_SCREEN:
-                    gameScreen.GetComponent<GameScreen>().Run();
-                    return true;
+                    return gameScreen.GetComponent<GameScreen>().Run();
                 default:
                     break;
             }
-            
+
 
             return false;
         }
 
 
-        void Start() {    
+        void Start() {
         } // Do nothing...
 
-        
+
         void Update() {
         } // Do nothing...
-    
+
     }
 
 }
