@@ -33,17 +33,14 @@ namespace Bikerz {
 
 
         GameObject obj_Game,
+            obj_Screen_Manager,
             obj_Screens,
+            obj_Screen_Game,
+            obj_Screen_Menu,
             obj_Menus;
 
 
         string screen = "";
-
-
-        void HandleGameError() {
-            Debug.Log(DEBUG_FAIL);
-            Application.Quit();
-        }
 
 
         public GameObject StartGame(
@@ -122,41 +119,33 @@ namespace Bikerz {
 
         void Start() {
             if(GameObject.Find(GAME_OBJECT_HANDLER)) {
+                obj_Game = GameObject.Find(GAME_OBJECT_HANDLER);
                 obj_Screens = GetScreenManager(new GameObject());
                 obj_Menus = GetMenuManager(new GameObject());
 
 
                 /* Sets first screen */
-                screen = GAME_SCREEN;
-
-
-                if(obj_Screens.GetComponent<ScreenManager>().SelectScreen(
-                    obj_Menus,
-                    obj_Screens,
-                    screen
-                ) == false) {
-                    HandleGameError();
-                }
-            } else {
-                HandleGameError();
+                //screen = MAIN_MENU;
+                screen = GAME_SCREEN; // TEST VALUE
             }
 
         }
 
 
         void Update() {
-            if(GameObject.Find("Player").GetComponent<PlayerControls>().PauseGame() == true) {
-                screen = PAUSE_SCREEN;
-            } else {
-                screen = GAME_SCREEN;
-            }
-
-
-            obj_Screens.GetComponent<ScreenManager>().SelectScreen(
+            if(obj_Screens.GetComponent<ScreenManager>().SelectScreen(
+                obj_Game, // WARNING: THIS IS THE ENTIRE GAME INSTANCE...
                 obj_Menus,
                 obj_Screens,
                 screen
-            );
+            ) == false) {
+                Application.Quit();
+            }
+
+
+            if(GameObject.Find("Player").GetComponent<PlayerControls>().QuitGame() == true) {
+                screen = "";
+            }
 
         }
 

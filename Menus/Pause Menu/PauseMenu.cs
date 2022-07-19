@@ -11,7 +11,50 @@ using UnityEngine.SceneManagement;
 
 namespace Menus {
     public class PauseMenu : MonoBehaviour {
-        public void StartPauseMenuScreen() {
+        const string PAUSE_MENU = "Pause Menu",
+            GAME_SCREEN = "Test Area";
+
+
+        const string DEBUG_ERROR = "ERROR: Could not load/exit Pause Menu...";
+
+
+        public bool ClosePauseMenu(
+            GameObject obj
+        ) {
+            GameObject objRef = obj;
+            try{
+                SceneManager.LoadScene(GAME_SCREEN);
+                objRef.GetComponent<MenuManager>().menu = "";
+                objRef.GetComponent<MenuManager>().active = false;
+
+
+                return true;
+            } catch {
+            } // Do nothing...
+
+
+            return false;
+        }
+
+
+        public bool StartPauseMenu(
+            GameObject obj
+        ) {
+            GameObject objRef = obj;
+
+
+            try {
+                SceneManager.LoadScene(PAUSE_MENU);
+                objRef.GetComponent<MenuManager>().menu = PAUSE_MENU;
+                objRef.GetComponent<MenuManager>().active = true;
+
+
+                return true;
+            } catch {
+            } // Do nothing...
+
+
+            return false;
         }
 
 
@@ -21,7 +64,7 @@ namespace Menus {
 
         void Update() {
         } // Do nothing...
-        
+
     }
 
 }

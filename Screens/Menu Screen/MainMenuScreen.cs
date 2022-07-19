@@ -9,45 +9,32 @@ using UnityEngine;
 
 
 using Graphics;
+using Screens;
+using Menus;
 
 
 namespace Screens {
     public class MainMenuScreen : MonoBehaviour {
-        const string MAIN_MENU = "Main Menu";
-
-
-        public bool Close() {
-            Destroy(GameObject.Find(MAIN_MENU));
-            return true;
+        public bool Close(
+            GameObject obj
+        ) {
+            return obj.GetComponent<MainMenu>().CloseMainMenu(obj);
         }
 
 
         public bool Open(
             GameObject obj
         ) {
-            GameObject objRef = obj;
-            objRef.name = "Main Menu Screen";
-            
-            
-            objRef.AddComponent<DisplaySprite>();
-            objRef.AddComponent<DrawSprite>();
-            
-            
-            if(objRef == GameObject.Find(objRef.name)) {
-                return true;
-            }
-
-
-            return false;
+            return obj.GetComponent<MainMenu>().StartMainMenu(obj);
         }
 
 
         void Start() {
-        }
+        } // Do nothing...
 
-        
+
         void Update() {
-        }
+        } // Do nothing...
 
     }
 

@@ -9,6 +9,8 @@ using UnityEngine;
 
 
 using Graphics;
+using Screens;
+using Menus;
 
 
 namespace Screens {
@@ -16,36 +18,24 @@ namespace Screens {
         const string PAUSE_MENU = "Pause Menu";
 
 
-        public bool Close() {
-            Destroy(GameObject.Find(PAUSE_MENU));
-            return true;
+        public bool Close(
+            GameObject obj
+        ) {
+            return obj.GetComponent<PauseMenu>().ClosePauseMenu(obj);
         }
 
 
         public bool Open(
             GameObject obj
         ) {
-            GameObject objRef = obj;
-            objRef.name = "Pause Menu Screen";
-            
-            
-            objRef.AddComponent<DisplaySprite>();
-            objRef.AddComponent<DrawSprite>();
-            
-            
-            if(objRef == GameObject.Find(objRef.name)) { 
-                return true; 
-            }
-
-
-            return false;
+            return obj.GetComponent<PauseMenu>().StartPauseMenu(obj);
         }
 
 
         void Start() {
         }
 
-        
+
         void Update() {
         }
 

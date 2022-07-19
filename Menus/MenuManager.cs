@@ -11,15 +11,21 @@ using UnityEngine.SceneManagement;
 
 namespace Menus {
     public class MenuManager : MonoBehaviour {
-        public void MainMenuManager(GameObject obj) {
-            GameObject objRef = obj;
-            objRef.GetComponent<MainMenu>().StartMainMenuScreen();
+        const string MAIN_MENU = "Main Menu",
+            PAUSE_MENU = "Pause Menu";
+
+
+        public string menu = "";
+        public bool active = false;
+
+
+        void DisplayPauseMenu() {
+            Debug.Log("Pause Menu Active...");
         }
 
 
-        public void PauseMenuManager(GameObject obj) {
-            GameObject objRef = obj;
-            objRef.GetComponent<PauseMenu>().StartPauseMenuScreen();
+        void DisplayMainMenu() {
+            Debug.Log("Main Menu Active...");
         }
 
 
@@ -28,7 +34,18 @@ namespace Menus {
 
 
         void Update() {
-        } // Do nothing...
+            if(active == true) {
+                if(menu == MAIN_MENU) {
+                    DisplayMainMenu();
+                } else if(menu == PAUSE_MENU) {
+                    DisplayPauseMenu();
+                } else {
+                    active = false;
+                }
+
+            }
+
+        }
 
     }
 

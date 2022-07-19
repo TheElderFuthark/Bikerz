@@ -161,7 +161,7 @@ namespace Player {
         }
 
 
-        public bool PauseGame() {
+        public bool QuitGame() {
             if(Input.GetKeyDown(KeyCode.Escape)) {
                 return true;
             }

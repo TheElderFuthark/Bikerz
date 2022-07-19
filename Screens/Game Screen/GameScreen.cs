@@ -20,16 +20,16 @@ namespace Screens {
             GAME_OBJECT_MANAGER = "Game Manager";
 
 
-        public bool Run() {
+        public bool Run(
+            GameObject handler
+        ) {
             if((!GameObject.Find(GAME_OBJECT_MANAGER)) &&
                 (!GameObject.Find(GAME_OBJECT_LEVELS))
             ) {
-                if((GameObject
-                        .Find(GAME_OBJECT_HANDLER)
+                if((handler
                         .GetComponent<GameManager>()
                         .StartGame(new GameObject())) &&
-                    (GameObject
-                        .Find(GAME_OBJECT_HANDLER)
+                    (handler
                         .GetComponent<GameManager>()
                         .StartLevelManager(new GameObject()))
                 ) {

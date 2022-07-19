@@ -13,23 +13,34 @@ using Menus;
 
 namespace Screens {
     public class ScreenManager : MonoBehaviour {
-        const string MAIN_MENU = "Main Menu Screen",
-            PAUSE_MENU = "Pause Menu Screen",
+        const string MAIN_MENU = "Main Menu",
+            PAUSE_MENU = "Pause Menu",
             GAME_SCREEN = "Test Area";
 
 
         public bool SelectScreen(
+            GameObject manager,
             GameObject menu,
             GameObject gameScreen,
             string select
         ) {
             switch(select) {
                 case MAIN_MENU:
-                    return gameScreen.GetComponent<MainMenuScreen>().Open(menu);
+                    if(gameScreen.GetComponent<MainMenuScreen>().Open(menu) == false) {
+                        return gameScreen.GetComponent<MainMenuScreen>().Close(menu);
+                    }
+
+
+                    return true;
                 case PAUSE_MENU:
-                    return gameScreen.GetComponent<PauseMenuScreen>().Open(menu);
+                    if(gameScreen.GetComponent<PauseMenuScreen>().Open(menu) == false) {
+                        return gameScreen.GetComponent<PauseMenuScreen>().Close(menu);
+                    }
+
+
+                    return true;
                 case GAME_SCREEN:
-                    return gameScreen.GetComponent<GameScreen>().Run();
+                    return gameScreen.GetComponent<GameScreen>().Run(manager);
                 default:
                     break;
             }
