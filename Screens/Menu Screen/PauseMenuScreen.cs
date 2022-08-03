@@ -15,9 +15,6 @@ using Menus;
 
 namespace Screens {
     public class PauseMenuScreen : MonoBehaviour {
-        const string PAUSE_MENU = "Pause Menu";
-
-
         public bool Close(
             GameObject obj
         ) {

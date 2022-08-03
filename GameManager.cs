@@ -43,6 +43,24 @@ namespace Bikerz {
         string screen = "";
 
 
+        public bool reset = false;
+
+
+        GameObject ResetGame(
+            GameObject obj
+        ) {
+            GameObject objRef = obj;
+            objRef.name = GAME_OBJECT_MANAGER;
+
+
+            objRef.AddComponent<GameManager>();
+            objRef.transform.parent = GameObject.Find(GAME_OBJECT_HANDLER).transform;
+
+
+            return objRef;
+        }
+
+
         public GameObject StartGame(
             GameObject obj
         ) {
@@ -90,6 +108,7 @@ namespace Bikerz {
 
 
             objRef.AddComponent<MenuManager>();
+            objRef.AddComponent<MenuActions>();
             objRef.AddComponent<MainMenu>();
             objRef.AddComponent<PauseMenu>();
             objRef.AddComponent<DisplaySprite>();
@@ -133,19 +152,28 @@ namespace Bikerz {
 
 
         void Update() {
+            if(reset == true) {
+                Destroy(obj_Game); // WARNING: Deletes & re-initialises entire game!!!
+                obj_Game = ResetGame(new GameObject()); // Resets...
+                reset = false; // Prevents iteration...
+            }
+
+
             if(obj_Screens.GetComponent<ScreenManager>().SelectScreen(
                 obj_Game, // WARNING: THIS IS THE ENTIRE GAME INSTANCE...
                 obj_Menus,
                 obj_Screens,
                 screen
             ) == false) {
-                Application.Quit();
+                obj_Menus.GetComponent<MenuActions>().ExitGame();
             }
 
 
             if(GameObject.Find("Player").GetComponent<PlayerControls>().QuitGame() == true) {
                 screen = "";
             }
+
+
 
         }
 

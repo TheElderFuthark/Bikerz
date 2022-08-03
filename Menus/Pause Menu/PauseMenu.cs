@@ -15,25 +15,23 @@ namespace Menus {
             GAME_SCREEN = "Test Area";
 
 
-        const string DEBUG_ERROR = "ERROR: Could not load/exit Pause Menu...";
-
-
         public bool ClosePauseMenu(
             GameObject obj
         ) {
             GameObject objRef = obj;
-            try{
+
+
+            if(objRef.GetComponent<MenuManager>().enterPressed == true) {
                 SceneManager.LoadScene(GAME_SCREEN);
-                objRef.GetComponent<MenuManager>().menu = "";
+                objRef.GetComponent<MenuManager>().menu = GAME_SCREEN;
                 objRef.GetComponent<MenuManager>().active = false;
 
 
-                return true;
-            } catch {
-            } // Do nothing...
+                return false;
+            }
 
 
-            return false;
+            return true;
         }
 
 
@@ -43,15 +41,14 @@ namespace Menus {
             GameObject objRef = obj;
 
 
-            try {
+            if(objRef.GetComponent<MenuManager>().enterPressed == false) {
                 SceneManager.LoadScene(PAUSE_MENU);
                 objRef.GetComponent<MenuManager>().menu = PAUSE_MENU;
                 objRef.GetComponent<MenuManager>().active = true;
 
 
                 return true;
-            } catch {
-            } // Do nothing...
+            }
 
 
             return false;

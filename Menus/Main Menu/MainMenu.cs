@@ -11,9 +11,8 @@ using UnityEngine.SceneManagement;
 
 namespace Menus {
     public class MainMenu : MonoBehaviour {
-        const string MAIN_MENU = "Main Menu";
-        const string GAME_SCREEN = "Test Area";
-        const string DEBUG_ERROR = "ERROR! Could not load/exit main menu screen...";
+        const string MAIN_MENU = "Main Menu",
+            GAME_SCREEN = "Test Area";
 
 
         public bool CloseMainMenu(
@@ -22,17 +21,16 @@ namespace Menus {
             GameObject objRef = obj;
 
 
-            try {
-                objRef.GetComponent<MenuManager>().menu = "";
+            if(objRef.GetComponent<MenuManager>().enterPressed == true) {
+                objRef.GetComponent<MenuManager>().menu = GAME_SCREEN;
                 objRef.GetComponent<MenuManager>().active = false;
 
 
-                return true;
-            } catch {
-            } // Do nothing...
+                return false;
+            }
 
 
-            return false;
+            return true;
         }
 
 
@@ -42,15 +40,14 @@ namespace Menus {
             GameObject objRef = obj;
 
 
-            try {
+            if(objRef.GetComponent<MenuManager>().enterPressed == false) {
                 SceneManager.LoadScene(MAIN_MENU);
                 objRef.GetComponent<MenuManager>().menu = MAIN_MENU;
                 objRef.GetComponent<MenuManager>().active = true;
 
 
                 return true;
-            } catch {
-            } // Do nothing...
+            }
 
 
             return false;

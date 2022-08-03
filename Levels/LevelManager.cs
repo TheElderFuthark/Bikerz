@@ -17,14 +17,17 @@ using Mobs;
 
 namespace Levels {
     public class LevelManager : MonoBehaviour {
-        const string DEBUG_SUCCESS = "Level loaded...", 
-            DEBUG_FAIL = "ERROR: Issue loading level...";   
+        const string DEBUG_SUCCESS = "Level loaded...",
+            DEBUG_FAIL = "ERROR: Issue loading level...";
 
 
         const string GAME_OBJECT_GAME_MANAGER = "Game Manager",
             GAME_OBJECT_LEVEL_ACTIONS = "Level Actions",
             GAME_OBJECT_LEVEL_MANAGER = "Level Manager",
             GAME_OBJECT_UI = "Player UI";
+
+
+        public bool restart = false;
 
 
         GameObject StartTimer(
@@ -36,8 +39,8 @@ namespace Levels {
 
             objRef.AddComponent<LevelTimer>();
             objRef.transform.parent = GameObject.Find(GAME_OBJECT_LEVEL_MANAGER).transform;
-            
-            
+
+
             return objRef;
         }
 
@@ -49,10 +52,10 @@ namespace Levels {
             objRef.name = GAME_OBJECT_LEVEL_ACTIONS;
 
 
-            objRef.AddComponent<LevelActions>(); 
+            objRef.AddComponent<LevelActions>();
             objRef.transform.parent = GameObject.Find(GAME_OBJECT_LEVEL_MANAGER).transform;
-            
-            
+
+
             return objRef;
         }
 
@@ -78,9 +81,9 @@ namespace Levels {
             GameObject ui,
             GameObject timer
         ) {
-            if( GameObject.Find(levels.name) && 
-                GameObject.Find(ui.name) && 
-                GameObject.Find(timer.name)
+            if( levels == GameObject.Find(levels.name) &&
+                ui == GameObject.Find(ui.name) &&
+                timer == GameObject.Find(timer.name)
             ) {
                 return true;
             }
@@ -104,8 +107,8 @@ namespace Levels {
 
         }
 
-        
-        void Update() { 
+
+        void Update() {
         } // Do nothing...
 
     }

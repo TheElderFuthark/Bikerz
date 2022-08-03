@@ -171,6 +171,16 @@ namespace Player {
         }
 
 
+        public bool Menu_EnterPressed() {
+            if(Input.GetKeyDown("Enter")) { 
+                return true;
+            }
+
+
+            return false;
+        }
+
+
         string KeyPressed() {
             if(Input.GetKeyDown("1")) {
                 return FIRE_LEFT;
