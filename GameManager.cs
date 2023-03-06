@@ -1,7 +1,7 @@
 /*  @Title: Bikerz
     @Author: Lloyd Thomas
     @Version: v0.01
-    @Date: 29/05/2022
+    @Date: 09/10/2022
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -22,13 +22,14 @@ namespace Bikerz {
 
 
         const string GAME_OBJECT_MANAGER = "Game Manager",
+            GAME_OBJECT_DATA = "Game Data Tracker",
             GAME_OBJECT_HANDLER = "Game Handler",
             GAME_OBJECT_LEVELS = "Level Manager",
             GAME_OBJECT_MENUS = "Menu Manager";
 
 
         const string MAIN_MENU = "Main Menu",
-            PAUSE_SCREEN = "Pause Menu",
+            PAUSE_MENU = "Pause Menu",
             GAME_SCREEN = "Test Area";
 
 
@@ -40,13 +41,14 @@ namespace Bikerz {
             obj_Menus;
 
 
-        string screen = "";
+        public string screen = "";
 
 
-        public bool reset = false;
+        public bool playerDead = false, 
+            reset = false;
 
 
-        GameObject ResetGame(
+        public GameObject ResetGame(
             GameObject obj
         ) {
             GameObject objRef = obj;
@@ -59,7 +61,7 @@ namespace Bikerz {
 
             return objRef;
         }
-
+        
 
         public GameObject StartGame(
             GameObject obj
@@ -109,6 +111,7 @@ namespace Bikerz {
 
             objRef.AddComponent<MenuManager>();
             objRef.AddComponent<MenuActions>();
+            objRef.AddComponent<MenuControls>();
             objRef.AddComponent<MainMenu>();
             objRef.AddComponent<PauseMenu>();
             objRef.AddComponent<DisplaySprite>();
@@ -135,27 +138,41 @@ namespace Bikerz {
             return objRef;
         }
 
-
+        
         void Start() {
+            /*  WARNING: Game won't start unless there is already an 
+                object called "Game Handler in the scene... This is a deliberate
+                feature for testing purposes. 
+            */
             if(GameObject.Find(GAME_OBJECT_HANDLER)) {
                 obj_Game = GameObject.Find(GAME_OBJECT_HANDLER);
-                obj_Screens = GetScreenManager(new GameObject());
-                obj_Menus = GetMenuManager(new GameObject());
+                DontDestroyOnLoad(obj_Game);
 
+
+                // Prevents duplicate instance/s...
+                if(!(GameObject.Find("Screen Manager")) && 
+                    !(GameObject.Find(GAME_OBJECT_MENUS))
+                ) {
+                    obj_Screens = GetScreenManager(new GameObject());
+                    obj_Menus = GetMenuManager(new GameObject());
+                }
 
                 /* Sets first screen */
-                //screen = MAIN_MENU;
-                screen = GAME_SCREEN; // TEST VALUE
+                screen = GAME_SCREEN;
             }
 
         }
 
 
         void Update() {
-            if(reset == true) {
-                Destroy(obj_Game); // WARNING: Deletes & re-initialises entire game!!!
-                obj_Game = ResetGame(new GameObject()); // Resets...
-                reset = false; // Prevents iteration...
+            /*  Prevents disconnection from the 
+                overall flow of the program/game.
+            */
+            if(!obj_Screens && 
+                !obj_Menus
+            ) {
+                obj_Screens = GameObject.Find("Screen Manager");
+                obj_Menus = GameObject.Find(GAME_OBJECT_MENUS);
             }
 
 
@@ -164,16 +181,17 @@ namespace Bikerz {
                 obj_Menus,
                 obj_Screens,
                 screen
-            ) == false) {
-                obj_Menus.GetComponent<MenuActions>().ExitGame();
+            ) == true) {
+                obj_Screens.GetComponent<GameScreen>().set = false;
+                if(obj_Menus.GetComponent<MenuManager>().menu == MAIN_MENU) {
+                    screen = MAIN_MENU;
+                } else if(obj_Menus.GetComponent<MenuManager>().menu == PAUSE_MENU) {
+                    screen = PAUSE_MENU;
+                }
+            } else {
+                obj_Screens.GetComponent<GameScreen>().set = true;
+                screen = GAME_SCREEN;
             }
-
-
-            if(GameObject.Find("Player").GetComponent<PlayerControls>().QuitGame() == true) {
-                screen = "";
-            }
-
-
 
         }
 

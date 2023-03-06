@@ -1,3 +1,8 @@
+/*  @Title: Bikerz
+    @Author: Lloyd Thomas
+    @Version: v0.01
+    @Date: 29/05/2022
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +20,7 @@ namespace Menus {
         }
 
 
-        public void ExitToMainMenu() {
+        public void ResetGame() {
             /*  This method should include the actions, in the correct order, of the Game Screen
                 extiing, and re-entering the Main Menu Screen.
             */

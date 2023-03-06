@@ -9,49 +9,49 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
+using Bikerz;
+
+
 namespace Menus {
     public class PauseMenu : MonoBehaviour {
         const string PAUSE_MENU = "Pause Menu",
             GAME_SCREEN = "Test Area";
 
 
-        public bool ClosePauseMenu(
-            GameObject obj
+        public bool PauseMenuOptions(
+            GameObject obj_Manager,
+            GameObject obj_Menus
         ) {
-            GameObject objRef = obj;
+            if(obj_Menus.GetComponent<MenuManager>().escapePressed == true) {
+                if(obj_Menus.GetComponent<MenuManager>().active == true) {
+                    obj_Menus.GetComponent<MenuManager>().active = false;
+                    return false;
+                } else {
+                    obj_Menus.GetComponent<MenuManager>().active = true;
+                    obj_Menus.GetComponent<MenuManager>().menu = PAUSE_MENU;
+                    obj_Manager.GetComponent<GameManager>().screen = PAUSE_MENU;
+                }
 
 
-            if(objRef.GetComponent<MenuManager>().enterPressed == true) {
-                SceneManager.LoadScene(GAME_SCREEN);
-                objRef.GetComponent<MenuManager>().menu = GAME_SCREEN;
-                objRef.GetComponent<MenuManager>().active = false;
+                obj_Menus.GetComponent<MenuManager>().escapePressed = false;
+            } else if(obj_Menus.GetComponent<MenuManager>().active == true &&
+                obj_Menus.GetComponent<MenuManager>().enterPressed == true
+            ) {
+                obj_Menus.GetComponent<MenuManager>().Menu_OptionEvent(
+                    obj_Menus,
+                    obj_Menus.GetComponent<MenuManager>().OptionSelected(
+                        obj_Menus.GetComponent<MenuManager>().options_pause,
+                        obj_Menus.GetComponent<MenuManager>().index
+                    )
+
+                );
 
 
-                return false;
+                obj_Menus.GetComponent<MenuManager>().enterPressed = false;
             }
 
 
             return true;
-        }
-
-
-        public bool StartPauseMenu(
-            GameObject obj
-        ) {
-            GameObject objRef = obj;
-
-
-            if(objRef.GetComponent<MenuManager>().enterPressed == false) {
-                SceneManager.LoadScene(PAUSE_MENU);
-                objRef.GetComponent<MenuManager>().menu = PAUSE_MENU;
-                objRef.GetComponent<MenuManager>().active = true;
-
-
-                return true;
-            }
-
-
-            return false;
         }
 
 

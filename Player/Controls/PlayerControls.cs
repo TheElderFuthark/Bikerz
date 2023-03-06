@@ -33,7 +33,7 @@ namespace Player {
 
 
         public const float PLAYER_SPEED = 0.25f;
-        public const float PLAYER_SPEED_X = 0.05f;
+        public const float PLAYER_SPEED_X = 0.025f;
         public const float PLAYER_SPEED_Y = 1.00f;
 
 
@@ -158,26 +158,6 @@ namespace Player {
 
 
             return gridSnap_y_Ref;
-        }
-
-
-        public bool QuitGame() {
-            if(Input.GetKeyDown(KeyCode.Escape)) {
-                return true;
-            }
-
-
-            return false;
-        }
-
-
-        public bool Menu_EnterPressed() {
-            if(Input.GetKeyDown("Enter")) { 
-                return true;
-            }
-
-
-            return false;
         }
 
 

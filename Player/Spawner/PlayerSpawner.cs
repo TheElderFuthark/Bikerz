@@ -43,8 +43,12 @@ namespace Player {
 
             /* Size & position of hitbox relative to external script/s.
             */
-            objRef.GetComponent<PlayerData>().x1 = objRef.GetComponent<Hitbox>().obj_Ref.GetComponent<Hitbox>().x1;
-            objRef.GetComponent<PlayerData>().y1 = objRef.GetComponent<Hitbox>().obj_Ref.GetComponent<Hitbox>().y1;
+            objRef.GetComponent<PlayerData>().x1 = 
+                objRef.GetComponent<Hitbox>().obj_Ref.GetComponent<Hitbox>().x1;
+            
+            
+            objRef.GetComponent<PlayerData>().y1 = 
+                objRef.GetComponent<Hitbox>().obj_Ref.GetComponent<Hitbox>().y1;
 
 
             objRef.GetComponent<Hitbox>().x2 = objRef.GetComponent<PlayerData>().x2;

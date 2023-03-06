@@ -26,19 +26,9 @@ namespace Screens {
         ) {
             switch(select) {
                 case MAIN_MENU:
-                    if(gameScreen.GetComponent<MainMenuScreen>().Open(menu) == false) {
-                        return gameScreen.GetComponent<MainMenuScreen>().Close(menu);
-                    }
-
-
-                    return true;
+                    return menu.GetComponent<MainMenuScreen>().Open(manager, menu);
                 case PAUSE_MENU:
-                    if(gameScreen.GetComponent<PauseMenuScreen>().Open(menu) == false) {
-                        return gameScreen.GetComponent<PauseMenuScreen>().Close(menu);
-                    }
-
-
-                    return true;
+                    return menu.GetComponent<PauseMenuScreen>().Open(manager, menu);
                 case GAME_SCREEN:
                     return gameScreen.GetComponent<GameScreen>().Run(manager);
                 default:
@@ -46,7 +36,7 @@ namespace Screens {
             }
 
 
-            return false;
+            return true;
         }
 
 

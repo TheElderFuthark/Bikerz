@@ -1,7 +1,7 @@
 /*  @Title: Bikerz
     @Author: Lloyd Thomas
     @Version: v0.01
-    @Date: 29/05/2022
+    @Date: 19/01/2023
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -28,8 +28,18 @@ namespace Player {
         const string FIRE_RIGHT = "right";
 
 
+        const int MOB_COUNT_MAX_LEVEL_0 = 4;
+
+
         float i = 0.00f;
         public int iteration = 0;
+        
+        
+        public int mobCount = 0,
+            count = 0;
+
+
+        List<GameObject> obj_All_Mobs = new List<GameObject>();
 
 
         GameObject obj_Player_Ref,
@@ -60,14 +70,15 @@ namespace Player {
             GameObject projectile, 
             GameObject mob
         ) {
+        
             if(projectile.GetComponent<HitboxDetection>().DamageDealt(
                 projectile, 
                 mob
             )) { 
                 return true; 
-            }   
-            
-            
+            }
+
+
             return false;
         }
 
@@ -114,16 +125,26 @@ namespace Player {
                 GameObject.Find("Player");
             
             
-            obj_Mobs_Ref = 
-                GameObject.Find("Mobs");
-            
-            
             obj_Player_Projectiles_Ref = 
                 GameObject.Find("Player Projectiles");
+
+
+            mobCount = 
+                GameObject.Find("Level Spawner")
+                .GetComponent<MobsSpawner>().mobCount;
+
+
+            count = 0;
+            mobCount = MOB_COUNT_MAX_LEVEL_0;
         }
         
 
-        void Update() {
+        void Update() { 
+            if(count >= mobCount) {
+                count = 0;
+            }
+
+
             if(obj_Player_Ref.GetComponent<PlayerData>().firePressed) {
                 if(iteration > 0) {
                     Destroy(GameObject.Find(
@@ -134,15 +155,15 @@ namespace Player {
 
 
                 obj_Player_Projectile_Ref = CreateProjectile(
-                        new GameObject(),
-                        obj_Player_Ref.transform.position, 
-                        iteration
-                    );
+                    new GameObject(),
+                    obj_Player_Ref.transform.position, 
+                    iteration
+                );
 
 
-                obj_Player_Projectile_Ref = obj_Player_Projectile_Ref.
-                    GetComponent<DrawSprite>().
-                    ApplySprite(obj_Player_Projectile_Ref);   
+                obj_Player_Projectile_Ref = obj_Player_Projectile_Ref
+                    .GetComponent<DrawSprite>()
+                    .ApplySprite(obj_Player_Projectile_Ref);   
 
 
                 obj_Player_Ref.GetComponent<PlayerData>().firePressed = false;          
@@ -158,16 +179,28 @@ namespace Player {
                 }
 
 
-                obj_Player_Projectiles_Ref.GetComponent<PlayerProjectiles>().
-                    Fire(obj_Player_Projectile_Ref, i);            
+                obj_Player_Projectiles_Ref
+                    .GetComponent<PlayerProjectiles>()
+                    .Fire(obj_Player_Projectile_Ref, i);        
+                    
+                        
+                obj_Mobs_Ref =  GameObject.Find("Mobs " + count);
+                if(HitTarget(obj_Player_Projectile_Ref, obj_Mobs_Ref) == true) {
+                    Destroy(obj_Mobs_Ref);  
+                    GameObject
+                        .Find("Level Spawner")
+                        .GetComponent<MobsSpawner>()
+                        .respawn = true;
+                    
+                    
+                    mobCount++;
+                }
+
             } 
 
 
-            if(HitTarget(
-                obj_Player_Projectile_Ref, 
-                GameObject.Find("Mobs")
-            )) {
-                Destroy(GameObject.Find("Mobs"));            
+            if(count < mobCount) {
+                count++;
             }
 
         }

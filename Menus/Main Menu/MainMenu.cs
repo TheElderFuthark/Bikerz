@@ -1,12 +1,15 @@
 /*  @Title: Bikerz
     @Author: Lloyd Thomas
     @Version: v0.01
-    @Date: 29/05/2022
+    @Date: 09/10/2022
 */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+
+using Bikerz;
 
 
 namespace Menus {
@@ -15,42 +18,40 @@ namespace Menus {
             GAME_SCREEN = "Test Area";
 
 
-        public bool CloseMainMenu(
-            GameObject obj
+        public bool MainMenuOptions(
+            GameObject obj_Manager,
+            GameObject obj_Menus
         ) {
-            GameObject objRef = obj;
+            if(obj_Menus.GetComponent<MenuManager>().escapePressed == true) {
+                if(obj_Menus.GetComponent<MenuManager>().active == true) {
+                    obj_Menus.GetComponent<MenuManager>().active = false;
+                    return false;
+                } else {
+                    obj_Menus.GetComponent<MenuManager>().active = true;
+                    obj_Menus.GetComponent<MenuManager>().menu = MAIN_MENU;
+                    obj_Manager.GetComponent<GameManager>().screen = MAIN_MENU;
+                }
 
 
-            if(objRef.GetComponent<MenuManager>().enterPressed == true) {
-                objRef.GetComponent<MenuManager>().menu = GAME_SCREEN;
-                objRef.GetComponent<MenuManager>().active = false;
+                obj_Menus.GetComponent<MenuManager>().escapePressed = false;
+            } else if(obj_Menus.GetComponent<MenuManager>().active == true &&
+                obj_Menus.GetComponent<MenuManager>().enterPressed == true
+            ) {
+                obj_Menus.GetComponent<MenuManager>().Menu_OptionEvent(
+                    obj_Menus,
+                    obj_Menus.GetComponent<MenuManager>().OptionSelected(
+                        obj_Menus.GetComponent<MenuManager>().options_main,
+                        obj_Menus.GetComponent<MenuManager>().index
+                    )
+
+                );
 
 
-                return false;
+                obj_Menus.GetComponent<MenuManager>().enterPressed = false;
             }
 
 
             return true;
-        }
-
-
-        public bool StartMainMenu(
-            GameObject obj
-        ) {
-            GameObject objRef = obj;
-
-
-            if(objRef.GetComponent<MenuManager>().enterPressed == false) {
-                SceneManager.LoadScene(MAIN_MENU);
-                objRef.GetComponent<MenuManager>().menu = MAIN_MENU;
-                objRef.GetComponent<MenuManager>().active = true;
-
-
-                return true;
-            }
-
-
-            return false;
         }
 
 

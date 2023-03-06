@@ -15,26 +15,20 @@ using Menus;
 
 namespace Screens {
     public class PauseMenuScreen : MonoBehaviour {
-        public bool Close(
-            GameObject obj
-        ) {
-            return obj.GetComponent<PauseMenu>().ClosePauseMenu(obj);
-        }
-
-
         public bool Open(
-            GameObject obj
+            GameObject obj_Manager,
+            GameObject obj_Menus
         ) {
-            return obj.GetComponent<PauseMenu>().StartPauseMenu(obj);
+            return obj_Menus.GetComponent<PauseMenu>().PauseMenuOptions(obj_Manager, obj_Menus);
         }
 
 
         void Start() {
-        }
+        } // Do nothing...
 
 
         void Update() {
-        }
+        } // Do nothing...
 
     }
 

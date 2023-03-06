@@ -33,7 +33,7 @@ namespace Levels {
                 objRef.GetComponent<PlayerSpawner>().SpawnPlayer(new GameObject()),
                 objRef.GetComponent<PlayerMotorcycleSpawner>().SpawnMotorcycle(new GameObject()),
                 objRef.GetComponent<PlayerProjectileSpawner>().SpawnProjectileLauncher(new GameObject()),
-                objRef.GetComponent<MobsSpawner>().SpawnMob(new GameObject())
+                objRef.GetComponent<MobsSpawner>().SpawnMob(new GameObject(), 0)
             );
 
         }

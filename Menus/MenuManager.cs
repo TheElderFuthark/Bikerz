@@ -1,7 +1,7 @@
 /*  @Title: Bikerz
     @Author: Lloyd Thomas
     @Version: v0.01
-    @Date: 29/05/2022
+    @Date: 09/10/2022
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -39,7 +39,7 @@ namespace Menus {
 
 
         // Var list/array input of ALL consts related to the main menu
-        public static List <string> options_main = new List <string> {
+        public List <string> options_main = new List <string> {
             MAIN_NEW_GAME,
             MAIN_LAST_LEVEL,
             MAIN_LEVEL_MENU,
@@ -50,7 +50,7 @@ namespace Menus {
 
 
         // Var list/array input of ALL consts related to the pause menu
-        public static List <string> options_pause = new List<string> {
+        public List <string> options_pause = new List<string> {
             PAUSE_RESTART,
             PAUSE_OPTIONS_MENU,
             PAUSE_SAVE_GAME,
@@ -66,7 +66,9 @@ namespace Menus {
 
         // Process event trigger/s
         public bool active = false,
+            optionEvent = false,
             enterPressed = false,
+            escapePressed = false,
             credits = false,
             loadOptionsMenu = false,
             loadLevelMenu = false,
@@ -75,13 +77,23 @@ namespace Menus {
             newGame = false;
 
 
-        int index = 0;
+        public int index = 0;
 
 
-        GameObject obj_Menu_Actions;
+        GameObject obj_Player,
+            obj_Menu_Manager;
 
 
-        void Menu_OptionEvent(
+        void DisplayMenu() {
+            /*  1) Draw Sprites
+                2) Scale menus
+                3) update menu option selected, and
+                other UI features/animations
+            */
+        }
+
+
+        public void Menu_OptionEvent(
             GameObject menuActions,
             string option
         ) {
@@ -111,7 +123,7 @@ namespace Menus {
                     menuActions.GetComponent<MenuActions>().SaveGame();
                     break;
                 case PAUSE_EXIT_GAME:
-                    menuActions.GetComponent<MenuActions>().ExitToMainMenu();
+                    //menuActions.GetComponent<MenuActions>().ExitToMainMenu();
                     break;
                 default:
                     break;
@@ -120,7 +132,7 @@ namespace Menus {
         }
 
 
-        string OptionSelected(
+        public string OptionSelected(
             List<string> options,
             int index
         ) {
@@ -128,51 +140,128 @@ namespace Menus {
         }
 
 
-        void DisplayMenu() {
-            /*  1) Draw Sprites
-                2) Scale menus
-                3) update menu option selected, and
-                other UI features/animations
-            */
+        GameObject MenuControls_DisablePlayerControls(
+            GameObject obj_Player
+        ) {
+            GameObject objRef = obj_Player;
+            Destroy(objRef.GetComponent<PlayerControls>());            
+            
+            
+            return objRef;
+        }
+
+
+        GameObject MenuControls_EnablePlayerControls(
+            GameObject obj_Player
+        ) {
+            GameObject objRef= obj_Player;
+            objRef.AddComponent<PlayerControls>();
+            
+            
+            return objRef;
+        }
+
+
+        bool MenuControls_Escape(
+            GameObject obj_Menus
+        ) {
+            GameObject objRef = obj_Menus;
+            
+            
+            if(objRef.GetComponent<MenuControls>().EscapePressed() == true) {
+                return true;
+            }
+            
+            
+            return false;
+        }
+
+
+        bool MenuControls_Enter(
+            GameObject obj_Menus
+        ) {
+            GameObject objRef = obj_Menus;
+
+
+            if(objRef.GetComponent<MenuControls>().EnterPressed() == true) {
+                return true;
+            }
+
+
+            return false;
+        }
+
+
+        int MenuControls_Down(
+            GameObject obj_Menus,
+            string menu,
+            int index
+        ) {
+            GameObject objRef = obj_Menus;
+            int result = index;
+
+
+            if(objRef.GetComponent<MenuControls>().DownPressed() == true && menu == MAIN_MENU) {
+               if(result > 5) {
+                    result = 5;
+                } else {
+                    result++;
+                }
+            } else if(objRef.GetComponent<MenuControls>().DownPressed() == true && menu == PAUSE_MENU) {
+               if(result > 6) {
+                    result = 6;
+                } else {
+                    result++;
+                }
+
+            }
+
+
+            return result;
+        }
+
+
+        int MenuControls_Up(
+            GameObject obj_Menus, 
+            string menu,
+            int index
+        ) {
+            GameObject objRef = obj_Menus;
+            int result = index;
+
+
+            if(objRef.GetComponent<MenuControls>().UpPressed() == true && menu == MAIN_MENU) {
+               if(result < 0) {
+                    result = 0;
+                } else {
+                    result--;
+                }
+            } else if(objRef.GetComponent<MenuControls>().UpPressed() == true && menu == PAUSE_MENU) {
+               if(result < 0) {
+                    result = 0;
+                } else {
+                    result--;
+                }
+
+            }
+
+
+            return result;
         }
 
 
         void Start() {
-            obj_Menu_Actions = GameObject.Find("Menu Manager");
+            menu = MAIN_MENU;
+            obj_Menu_Manager = GameObject.Find("Menu Manager");
+            obj_Player = GameObject.Find("Player");
         }
 
 
-        void Update() {
-            if(GameObject.Find("Player").GetComponent<PlayerControls>().Menu_EnterPressed() == true) {
-                enterPressed = true;
-            }
-
-
-            if(enterPressed == true) {
-                active = true;
-                enterPressed = false;
-            }
-
-
-            if(active == true) {
-                if(menu == MAIN_MENU) {
-                    menuOption = OptionSelected(options_main, index);
-                } else if(menu == PAUSE_MENU) {
-                    menuOption = OptionSelected(options_pause, index);
-                }
-
-
-                if(GameObject.Find("Player").GetComponent<PlayerControls>().Menu_EnterPressed() == true) {
-                    Menu_OptionEvent(
-                        obj_Menu_Actions,
-                        menuOption
-                    );
-
-
-                    DisplayMenu();
-                }
-            }
-
+        void Update() {                    
+            index = MenuControls_Up(obj_Menu_Manager, menu, index);
+            index = MenuControls_Down(obj_Menu_Manager, menu, index);
+            enterPressed = MenuControls_Enter(obj_Menu_Manager);
+            escapePressed = MenuControls_Escape(obj_Menu_Manager);
         }
 
     }

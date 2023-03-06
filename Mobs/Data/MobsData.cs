@@ -17,7 +17,13 @@ namespace Mobs {
             MOB_HEIGHT = 1;
 
 
+        //const int MOB_COUNT_MAX_LEVEL_0 = 4;
+
+
         GameObject obj_Mobs_Ref;
+
+
+        public int count = 0;
 
 
         void DrawSprite(
@@ -45,16 +51,17 @@ namespace Mobs {
 
 
         void Start() {
-            obj_Mobs_Ref = 
-                GameObject.Find("Mobs");
+            obj_Mobs_Ref = GameObject.Find("Mobs " + count);
+            
+            
+            if(obj_Mobs_Ref) {
+                DrawSprite(obj_Mobs_Ref);
+            }
+            
         }
 
         
         void Update() {
-            if(obj_Mobs_Ref) {
-                DrawSprite(obj_Mobs_Ref);
-            }
-
         }
 
     }

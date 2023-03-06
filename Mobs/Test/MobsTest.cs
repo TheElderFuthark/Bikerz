@@ -19,16 +19,40 @@ namespace Mobs {
             Z = 0.00f,
             AXIS_OFFSET = 4.00f;
 
+
+        public float x1, 
+            y1, 
+            x2,
+            y2;
+
+
+        public int count = 0;
+
         
         GameObject obj_Player_Ref,
             obj_Mobs,
             obj_Mobs_Copy;
 
 
-        public float x1, 
-            y1, 
-            x2,
-            y2;
+        GameObject AttackPlayer_New(
+            GameObject mob,
+            GameObject player,
+            float x,
+            float y
+        ) {
+            GameObject playerRef = player,
+                mobRef = mob;
+
+
+            mobRef.transform.position = new Vector3(
+                mobRef.GetComponent<Hitbox>().x1 = x,
+                mobRef.GetComponent<Hitbox>().y1 = y,
+                Z
+            );
+
+
+            return mobRef;
+        }
 
 
         GameObject AttackPlayer(
@@ -76,7 +100,7 @@ namespace Mobs {
         
         
         void Start() {
-            obj_Mobs = GameObject.Find("Mobs");
+            obj_Mobs = GameObject.Find("Mobs " + count);
             obj_Player_Ref = GameObject.Find("Player");
 
 
@@ -98,7 +122,7 @@ namespace Mobs {
                     obj_Mobs, 
                     obj_Player_Ref
                 )) {
-                    obj_Player_Ref.GetComponent<PlayerData>().playerHealth -= 0.25f;
+                    obj_Player_Ref.GetComponent<PlayerData>().playerHealth -= 50.00f;
                 }
 
             

@@ -25,6 +25,7 @@ namespace Player {
 
 
             objRef.AddComponent<PlayerMotorcycle>();
+            objRef.AddComponent<Hitbox>();
             objRef.AddComponent<DisplaySprite>();
             objRef.AddComponent<DrawSprite>();
 

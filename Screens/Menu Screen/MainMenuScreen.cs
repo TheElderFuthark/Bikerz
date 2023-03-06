@@ -1,7 +1,7 @@
 /*  @Title: Bikerz
     @Author: Lloyd Thomas
     @Version: v0.01
-    @Date: 29/05/2022
+    @Date: 09/10/2022
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -15,17 +15,11 @@ using Menus;
 
 namespace Screens {
     public class MainMenuScreen : MonoBehaviour {
-        public bool Close(
-            GameObject obj
-        ) {
-            return obj.GetComponent<MainMenu>().CloseMainMenu(obj);
-        }
-
-
         public bool Open(
-            GameObject obj
+            GameObject obj_Manager,
+            GameObject obj_Menus
         ) {
-            return obj.GetComponent<MainMenu>().StartMainMenu(obj);
+            return obj_Menus.GetComponent<MainMenu>().MainMenuOptions(obj_Manager, obj_Menus);
         }
 
 

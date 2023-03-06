@@ -20,9 +20,17 @@ namespace Screens {
             GAME_OBJECT_MANAGER = "Game Manager";
 
 
+        public bool set = false;
+
+
         public bool Run(
             GameObject handler
         ) {
+            if(set == true) {
+                return false;
+            }
+
+
             if((!GameObject.Find(GAME_OBJECT_MANAGER)) &&
                 (!GameObject.Find(GAME_OBJECT_LEVELS))
             ) {
@@ -33,10 +41,10 @@ namespace Screens {
                         .GetComponent<GameManager>()
                         .StartLevelManager(new GameObject()))
                 ) {
-                    return true;
+                    set = true;
                 }
             } else {
-                return true;
+                set = true;
             }
 
 

@@ -15,7 +15,8 @@ namespace Player {
     public class PlayerHUD : MonoBehaviour {
         const string GAME_OBJECT_HUD = "Player HUD",
             GAME_OBJECT_HEALTH = "Health",
-            GAME_OBJECT_PLAYER = "Player";
+            GAME_OBJECT_PLAYER = "Player",
+            GAME_OBJECT_UI = "Player UI";
 
 
         const float HEALTH_Y = 1.00f,
@@ -65,16 +66,27 @@ namespace Player {
         }
 
 
-        void HUD_CreateHealthBar(GameObject obj) {
+        GameObject HUD_CreateHealthBar(GameObject obj) {
             GameObject objRef = obj;
             objRef.name = GAME_OBJECT_HEALTH;
             
             
             objRef.AddComponent<Hitbox>();
+            objRef.AddComponent<DisplaySprite>();
             objRef.AddComponent<DrawSprite>();
 
 
-            objRef.GetComponent<Hitbox>().x1 = GameObject.Find(GAME_OBJECT_PLAYER).GetComponent<PlayerData>().playerHealth;
+            objRef.GetComponent<Hitbox>().obj_Ref = objRef;
+
+
+            objRef.GetComponent<Hitbox>().x1 = 6.00f;
+            objRef.GetComponent<Hitbox>().y1 = HEALTH_Y;
+
+
+            objRef.GetComponent<Hitbox>().x2 = 
+                GameObject.Find(GAME_OBJECT_PLAYER).GetComponent<PlayerData>().playerHealth;
+            
+            
             objRef.GetComponent<Hitbox>().y1 = HEALTH_Y;
 
 
@@ -84,55 +96,104 @@ namespace Player {
                  1.00f
             );
 
-
+            objRef = objRef.GetComponent<DrawSprite>().ApplySprite(objRef);
             objRef.transform.parent = GameObject.Find(GAME_OBJECT_HUD).transform;
+
+
+            return objRef;
         }
 
 
-        void Start() {    
-            if(GameObject.Find(GAME_OBJECT_HUD)) {        
-                HUD_CreateHealthBar(new GameObject());
-            }   
-                
+        GameObject HUD_CreateHUD(GameObject obj) {
+            GameObject objRef = obj;
+            objRef.name = GAME_OBJECT_HUD;
+            
+            
+            objRef.AddComponent<Hitbox>();
+            objRef.AddComponent<DisplaySprite>();
+            objRef.AddComponent<DrawSprite>();
+
+
+            objRef.GetComponent<Hitbox>().obj_Ref = objRef;
+
+
+            objRef.GetComponent<Hitbox>().x1 = 6.00f;
+            objRef.GetComponent<Hitbox>().y1 = 6.00f;
+
+
+            objRef.GetComponent<Hitbox>().x2 = 6.00f;
+            objRef.GetComponent<Hitbox>().y2 = 2.00f;
+
+
+            objRef.transform.position = new Vector3(
+                 objRef.GetComponent<Hitbox>().x1,  
+                 objRef.GetComponent<Hitbox>().y1, 
+                 0.00f
+            );
+
+
+            objRef = objRef.GetComponent<DrawSprite>().ApplySprite(objRef);
+            objRef.transform.parent = GameObject.Find(GAME_OBJECT_UI).transform;
+
+
+            return objRef;
+        }
+
+
+        void Start() {  
+            if(!(GameObject.Find(GAME_OBJECT_HUD))) {       
+                obj_HUD = HUD_CreateHUD(new GameObject());
+            } else {
+                obj_HUD = GameObject.Find(GAME_OBJECT_HUD);
+            }
+            
+
+            if(!(GameObject.Find(GAME_OBJECT_HEALTH))) {
+                obj_Health = HUD_CreateHealthBar(new GameObject());
+            } else {
+                obj_Health = GameObject.Find(GAME_OBJECT_HEALTH);
+            }
+
         }
 
 
         void Update() {
-            if(GameObject.Find(GAME_OBJECT_HUD)) {
-                HUD_Update(
-                    GameObject.Find(GAME_OBJECT_HUD),
-                    (int) GameObject.Find(GAME_OBJECT_HUD).GetComponent<Hitbox>().x2,
-                    (int) GameObject.Find(GAME_OBJECT_HUD).GetComponent<Hitbox>().y2,
-                    GameObject.Find(GAME_OBJECT_HUD).GetComponent<Hitbox>().x1,
-                    GameObject.Find(GAME_OBJECT_HUD).GetComponent<Hitbox>().y1,
-                    GameObject.Find(GAME_OBJECT_HUD).GetComponent<Hitbox>().x2,
-                    GameObject.Find(GAME_OBJECT_HUD).GetComponent<Hitbox>().y2,
-                    HUD_RED,
-                    HUD_GREEN,
-                    HUD_BLUE,
-                    HUD_OPACITY
-                ); 
+            /* TODO
+            ====================================================
             
-            }
+            HUD_Update(
+                obj_HUD,
+                (int) obj_HUD.GetComponent<Hitbox>().x2,
+                (int) obj_HUD.GetComponent<Hitbox>().y2,
+                obj_HUD.GetComponent<Hitbox>().x1,
+                obj_HUD.GetComponent<Hitbox>().y1,
+                obj_HUD.GetComponent<Hitbox>().x2,
+                obj_HUD.GetComponent<Hitbox>().y2,
+                HUD_RED,
+                HUD_GREEN,
+                HUD_BLUE,
+                HUD_OPACITY
+            ); 
+                
+
+            HUD_Update(
+                obj_Health,
+                (int) obj_Health.GetComponent<Hitbox>().x2,
+                (int) obj_Health.GetComponent<Hitbox>().y2,
+                obj_Health.GetComponent<Hitbox>().x1,
+                obj_Health.GetComponent<Hitbox>().y1,
+                obj_Health.GetComponent<Hitbox>().x2,
+                obj_Health.GetComponent<Hitbox>().y2,
+                HEALTH_RED,
+                HEALTH_GREEN,
+                HEALTH_BLUE,
+                HEALTH_OPACITY
+            );
+
+            ====================================================
+            */
 
 
-            if(GameObject.Find(GAME_OBJECT_HEALTH)) {
-                HUD_Update(
-                    GameObject.Find(GAME_OBJECT_HEALTH),
-                    (int) GameObject.Find(GAME_OBJECT_HEALTH).GetComponent<Hitbox>().x2,
-                    (int) GameObject.Find(GAME_OBJECT_HEALTH).GetComponent<Hitbox>().y2,
-                    GameObject.Find(GAME_OBJECT_HEALTH).GetComponent<Hitbox>().x1,
-                    GameObject.Find(GAME_OBJECT_HEALTH).GetComponent<Hitbox>().y1,
-                    GameObject.Find(GAME_OBJECT_HEALTH).GetComponent<Hitbox>().x2,
-                    GameObject.Find(GAME_OBJECT_HEALTH).GetComponent<Hitbox>().y2,
-                    HEALTH_RED,
-                    HEALTH_GREEN,
-                    HEALTH_BLUE,
-                    HEALTH_OPACITY
-                );
-            
-            }
-        
         }
 
     }

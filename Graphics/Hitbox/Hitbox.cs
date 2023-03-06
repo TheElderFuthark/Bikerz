@@ -42,6 +42,9 @@ namespace Graphics {
         bool hitboxCreated = false;
 
 
+        public List<Vector2> coords = new List<Vector2>();
+
+
         public List<Vector2> CreateHitbox_MakeList(
             Obj_Hitbox hit
         ) {
@@ -191,30 +194,27 @@ namespace Graphics {
 
         void Update() {            
             if(hitboxCreated && obj_Ref) {
+                // Update coord/s
                 x1 = GetCurrentPosition_x(obj_Ref);
                 y1 = GetCurrentPosition_y(obj_Ref);
+
+
+                // For external script usage...
+                coords = CreateHitbox_MakeList(hitbox);
             } else {
-                hitbox = // INIT
-                    CreateHitbox_Create(
-                        new Obj_Hitbox()
-                    );
+                // Creates hitbox
+                hitbox = CreateHitbox_Create(new Obj_Hitbox());
                 
                 
-                hitbox = // Set val/s 
-                    CreateHitbox_SetValues(
-                        hitbox, 
-                        x2,
-                        y2
-                    );
+                // Set hitbox coord/s
+                hitbox = CreateHitbox_SetValues(hitbox, x2, y2);
                 
-                
-                hitbox = // Applies them
-                    CreateHitbox_ApplyValues(
-                        hitbox
-                    );
+
+                // Applies the set values to hitbox corner/s
+                hitbox = CreateHitbox_ApplyValues(hitbox);
 
 
-                // Prevents creation from reiteration
+                // Prevents creation from reiteration...
                 hitboxCreated = true;           
             }
         
